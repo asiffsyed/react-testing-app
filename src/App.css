@@ -1,0 +1,27 @@
+.App{
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.btn{
+  margin: 1rem;
+}
+
+.card{
+  margin-bottom: 0.2rem
+}
+.card-body{
+  padding : 0.5rem
+}
+.container{
+  margin-top: 1rem;
+}
+.col-sm{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.home-button a{
+  text-decoration: none;
+  color: inherit;
+}
