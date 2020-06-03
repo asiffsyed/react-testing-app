@@ -8,3 +8,4 @@ export default function* rootSaga(){
     yield takeEvery('GET_USER', getUsersSaga);
     yield takeLatest('GET_COMMENT', getCommentsSaga)
 }
+

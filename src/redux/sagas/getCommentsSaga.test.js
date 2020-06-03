@@ -7,7 +7,7 @@ import actionTypes from '../actionTypes';
 //Url for API call
 const url = "https://jsonplaceholder.typicode.com/comments"
 
-//Store setup
+//Mock Store setup
 const sagaMiddleware = createSagaMiddleware();
 const mockStore = configureStore([sagaMiddleware]);
 const store = mockStore({});
@@ -30,7 +30,7 @@ test("Saga work flow when the API request is success'", async () => {
     //Makes an API call
     expect(apiCallMock.mock.calls.length).toBe(1);
     expect(apiCallMock).toHaveBeenCalledWith(url);
-    //Calls addPost Action
+    //Calls addComment Action
     expect(store.getActions()[2]).toEqual({ type: actionTypes.addComment, payload : response });
     expect(store.getActions()[3]).toEqual({ type : actionTypes.loaded});
 })

@@ -141,7 +141,9 @@ describe('Testing the props dispatch an action or not', () => {
     sagaMiddleware.run(rootSaga);
 
     const wrapper = shallow(<MainPage store = { store } />).dive();
-
+    afterEach(() => {
+        store.clearActions()
+    })
     test('getPost action prop dispatches an action', () => {
         wrapper.props().getPost();
         expect(store.getActions()[0]).toEqual(getPostAction());
@@ -149,12 +151,12 @@ describe('Testing the props dispatch an action or not', () => {
 
     test('getUser action prop dispatches an action', () => {
         wrapper.props().getUser();
-        expect(store.getActions()[3]).toEqual(getUserAction());
+        expect(store.getActions()[0]).toEqual(getUserAction());
     })
 
     test('getComment action prop dispatches an action', () => {
         wrapper.props().getComment();
-        expect(store.getActions()[6]).toEqual(getCommentAction());
+        expect(store.getActions()[0]).toEqual(getCommentAction());
     })
 
 })

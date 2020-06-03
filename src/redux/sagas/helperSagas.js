@@ -1,6 +1,7 @@
 import { call, put } from 'redux-saga/effects';
-import axios from 'axios';
 import actionTypes from '../actionTypes';
+import apiCalls from '../../apiCalls';
+
 
 //Starts spinner and clears the error
 export function* beforeApiCall(){
@@ -9,10 +10,10 @@ export function* beforeApiCall(){
 }
 
 //ApiCall
-export function* apiCall(url, type){
+export function* apiCall(url){
     let data;
     try{
-        yield axios.get(url).then(res => data = res.data);
+        data = yield call(apiCalls.getData, url);
         return data;
     }
     catch{
@@ -30,4 +31,11 @@ export function* afterSuccessApiCall(type, payload){
 export function* afterFailedApiCall(){
     yield put({type: actionTypes.error})
     yield put ({type : actionTypes.loaded})
+}
+
+export default {
+    beforeApiCall,
+    apiCall,
+    afterSuccessApiCall,
+    afterFailedApiCall,
 }
