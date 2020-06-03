@@ -29,7 +29,7 @@ const mapStateToProps = state => ({
   loading: state.loading,
   name : state.name
 })
-const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = dispatch => ({
   getPost : () => dispatch(getPostAction()),
   getUser : () => dispatch(getUserAction()),
   getComment : () => dispatch(getCommentAction()),

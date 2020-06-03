@@ -1,10 +1,15 @@
 import React from 'react';
+import configureStore from 'redux-mock-store';
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from '../redux/sagas';
 import { shallow } from '../enzymeSetUp';
 import { findWithAttribute, storeFactory } from '../testHelpers';
-import MainPage, { UnConnectedMainPage } from './MainPage';
+import MainPage, { UnConnectedMainPage, } from './MainPage';
 import ErrorAlert from '../Components/ErrorAlert';
 import Spinner from '../Components/Spinner'
 import LoadedData from '../Components/LoadedData';
+import { getPostAction, getUserAction, getCommentAction } from '../redux/actions';
+
 
 const setUp = (initialState = {}) => storeFactory(initialState)
 
@@ -127,4 +132,29 @@ describe('dispatches the corresponding action on the button click', () => {
         getPostBtn.simulate('click');
         expect(getPostMockAction.mock.calls.length).toBe(1);
     })
+})
+
+describe('Testing the props dispatch an action or not', () => {
+    const sagaMiddleware = createSagaMiddleware();
+    const mockStore = configureStore([sagaMiddleware]);
+    const store = mockStore({});
+    sagaMiddleware.run(rootSaga);
+
+    const wrapper = shallow(<MainPage store = { store } />).dive();
+
+    test('getPost action prop dispatches an action', () => {
+        wrapper.props().getPost();
+        expect(store.getActions()[0]).toEqual(getPostAction());
+    })
+
+    test('getUser action prop dispatches an action', () => {
+        wrapper.props().getUser();
+        expect(store.getActions()[3]).toEqual(getUserAction());
+    })
+
+    test('getComment action prop dispatches an action', () => {
+        wrapper.props().getComment();
+        expect(store.getActions()[6]).toEqual(getCommentAction());
+    })
+
 })

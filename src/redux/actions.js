@@ -11,9 +11,8 @@ const nameAction = payload => ({
     type : actionTypes.userName,
     payload
 })
-const getPostAction = (payload) => ({
+let getPostAction = () => ({
     type : actionTypes.getPost,
-    payload
 })
 const getUserAction = () => ({
     type : actionTypes.getUser,
