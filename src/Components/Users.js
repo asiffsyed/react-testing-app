@@ -5,8 +5,8 @@ import Entry from './Entry';
 
 function User(props){
     return(
-        <div>
-            <h3>Users List</h3>
+        <div data-test = "users-component">
+            <h3 data-test = "users-heading">Users List</h3>
             {
                 props.users.map((user, index) => <Entry key = {index} entry = {user} /> )
             }
