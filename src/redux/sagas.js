@@ -1,55 +1,61 @@
-import { put, takeEvery, delay, takeLatest, call } from 'redux-saga/effects'
+import { put, takeEvery, takeLatest, call } from 'redux-saga/effects'
 import axios from 'axios';
+import actionTypes from './actionTypes';
+
+
+const urls = {
+    posts : "https://jsonplaceholder.typicode.com/posts",
+    users : "https://jsonplaceholder.typicode.com/users",
+    comments : "https://jsonplaceholder.typicode.com/comments"
+}
+
+//Starts spinner and clears the error
+export function* beforeApiCall(){
+    yield put ({type : actionTypes.loading})
+    yield put ({type : actionTypes.noError})
+}
+
+//ApiCall
+export function* apiCall(url, type){
+    let data;
+    try{
+        yield axios.get(url).then(res => data = res.data);
+        return data;
+    }
+    catch{
+        yield call(afterFailedApiCall)
+    }
+}
+
+//Passes data to the reducer and stops the spinner
+export function* afterSuccessApiCall(type, payload){
+    yield put({ type : type, payload });
+    yield put ({type : actionTypes.loaded})
+}
+
+//Updates the error and stops the spinner
+export function* afterFailedApiCall(){
+    yield put({type: actionTypes.error})
+    yield put ({type : actionTypes.loaded})
+}
+
 
 export function* getPostsData(){
-    let data
-    yield put ({type : "LOADING"})
-    yield put ({type : "NO_ERROR"})
-    try{
-       yield axios.get("https://jsonplaceholder.typicode.com/posts")
-        .then(res => data = res.data)
-        yield put({ type : "ADD_POST", payload : data});
-        yield put ({type : 'LOADED'})
-    }
-    catch(error){
-        yield put({type: "ERROR"})
-        yield put ({type : 'LOADED'})
-    }
+    yield call(beforeApiCall);
+    const data = yield call(apiCall, urls.posts);
+    yield call(afterSuccessApiCall, actionTypes.addPost, data);
 }
 
 function* getUsersData(){
-    let data;
-    yield put ({type : "LOADING"})
-    yield put ({type : "NO_ERROR"})
-    yield delay(500)
-    try{
-      yield axios.get("https://jsonplaceholder.typicode.com/users")
-        .then(res => data = res.data)
-        yield put({ type : "ADD_USER", payload : data} );
-        yield put ({type : 'LOADED'})
-    }
-    catch(error){
-        yield put({type: "ERROR"})
-        yield put ({type : 'LOADED'})
-    }
+    yield call(beforeApiCall);
+    const data = yield call(apiCall, urls.users);
+    yield call(afterSuccessApiCall, actionTypes.addUser, data);
 }
 function* getCommentsData(){
-    let data;
-    yield put ({type : "LOADING"})
-    yield put ({type : "NO_ERROR"})
-    yield delay(500)
-    try{
-      yield axios.get("https://jsonplaceholder.typicode.com/comments")
-        .then(res => data = res.data)
-        yield put({ type : "ADD_COMMENT", payload : data});
-        yield put ({type : 'LOADED'})
-    }
-    catch(error){
-        yield put({type: "ERROR"})
-        yield put ({type : 'LOADED'})
-    }
+    yield call(beforeApiCall);
+    const data = yield call(apiCall, urls.comments);
+    yield call(afterSuccessApiCall, actionTypes.addComment, data);
 }
-
 
 
 export default function* rootSaga(){
