@@ -32,6 +32,7 @@ test("Saga work flow when the API request is success'", async () => {
     expect(apiCallMock).toHaveBeenCalledWith(url);
     //Calls addComment Action
     expect(store.getActions()[2]).toEqual({ type: actionTypes.addComment, payload : response });
+        //Stops the spinner
     expect(store.getActions()[3]).toEqual({ type : actionTypes.loaded});
 })
 
@@ -46,8 +47,9 @@ test("Saga work flow when the API request is failed", async () => {
         //Makes an API call
         expect(apiCallMock.mock.calls.length).toBe(1);
         expect(apiCallMock).toHaveBeenCalledWith(url);
-        //Calls addPost Action
+        //Calls error Action
         expect(store.getActions()[2]).toEqual({ type: actionTypes.error });
+        //Stops the spinner
         expect(store.getActions()[3]).toEqual({ type : actionTypes.loaded});
 
 })

@@ -1,6 +1,6 @@
 import configureStore from 'redux-mock-store';
 import createSagaMiddleware, { runSaga } from 'redux-saga';
-import getPostsSaga from './getPostsSaga';
+import getUsersSaga from './getPostsSaga';
 import apiCalls from '../../apiCalls';
 import actionTypes from '../actionTypes';
 
@@ -22,7 +22,7 @@ test('getPostsSaga work flow when the API call is success', async () => {
     //Mocking successful API call
     const mockApiCall = jest.fn(() => Promise.resolve(response));
     apiCalls.getData = mockApiCall
-    await runSaga(store, getPostsSaga);
+    await runSaga(store, getUsersSaga);
     //Dispatches a spinner
     expect(store.getActions()[0]).toEqual({ type : actionTypes.loading });
     //resets the error
@@ -40,7 +40,7 @@ test('getPostsSaga work flow when the API call is failed', async () => {
     //Mocking successful API call
     const mockApiCall = jest.fn(() => Promise.reject("Something went wrong"));
     apiCalls.getData = mockApiCall
-    await runSaga(store, getPostsSaga);
+    await runSaga(store, getUsersSaga);
     //Dispatches a spinner
     expect(store.getActions()[0]).toEqual({ type : actionTypes.loading });
     //resets the error
